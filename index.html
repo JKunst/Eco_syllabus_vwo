@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economie VWO – Oefensite CE 2026</title>
+<style>
+  :root {
+    --blauw: #1a5fa8;
+    --donkerblauw: #0d3d6e;
+    --paars: #4a2570;
+    --lichtblauw: #e8f1fb;
+    --accent: #f0a500;
+    --groen: #2a9d5c;
+    --rood: #c0392b;
+    --tekst: #1a1a2e;
+    --grijs: #f4f6fa;
+    --border: #d0dcea;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--grijs); color: var(--tekst); display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: 260px; min-width: 260px; background: var(--donkerblauw);
+    color: white; display: flex; flex-direction: column; padding: 0;
+    position: fixed; left: 0; top: 0; height: 100vh; overflow-y: auto; z-index: 100;
+  }
+  #sidebar .logo {
+    background: var(--paars); padding: 22px 18px 18px;
+    font-size: 1.1rem; font-weight: 700; line-height: 1.3; border-bottom: 3px solid var(--accent);
+  }
+  #sidebar .logo span { font-size: 0.75rem; font-weight: 400; opacity: 0.8; display: block; margin-top: 4px; }
+  #sidebar nav { padding: 12px 0; flex: 1; }
+  #sidebar nav .nav-section { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.4); padding: 14px 18px 5px; }
+  #sidebar nav a {
+    display: flex; align-items: center; gap: 10px; padding: 10px 18px;
+    color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.88rem;
+    border-left: 3px solid transparent; transition: all 0.2s; cursor: pointer;
+  }
+  #sidebar nav a:hover { background: rgba(255,255,255,0.1); color: white; }
+  #sidebar nav a.active { background: rgba(255,255,255,0.12); color: white; border-left-color: var(--accent); font-weight: 600; }
+  #sidebar nav a .badge { margin-left: auto; background: var(--accent); color: #1a1a2e; border-radius: 10px; padding: 1px 7px; font-size: 0.7rem; font-weight: 700; }
+  #sidebar nav a .badge.done { background: var(--groen); color: white; }
+
+  /* MAIN */
+  #main { margin-left: 260px; flex: 1; min-height: 100vh; }
+
+  /* HEADER */
+  .page-header {
+    background: linear-gradient(135deg, var(--blauw), var(--paars));
+    color: white; padding: 32px 40px 28px;
+  }
+  .page-header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
+  .page-header p { opacity: 0.88; font-size: 0.95rem; max-width: 650px; }
+  .domain-tag { display: inline-block; background: var(--accent); color: #1a1a2e; border-radius: 4px; padding: 3px 10px; font-size: 0.75rem; font-weight: 700; margin-bottom: 10px; }
+
+  /* CONTENT */
+  .content { padding: 32px 40px; max-width: 900px; }
+
+  /* CARDS */
+  .card { background: white; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 24px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .card-header { background: var(--lichtblauw); border-bottom: 1px solid var(--border); padding: 16px 22px; display: flex; align-items: center; gap: 10px; }
+  .card-header h2 { font-size: 1.05rem; font-weight: 700; color: var(--donkerblauw); }
+  .card-header .icon { font-size: 1.3rem; }
+  .card-body { padding: 20px 22px; }
+  .card-body p { line-height: 1.7; margin-bottom: 10px; font-size: 0.93rem; }
+  .card-body ul { padding-left: 20px; margin-bottom: 10px; }
+  .card-body li { margin-bottom: 5px; line-height: 1.6; font-size: 0.93rem; }
+  .card-body strong { color: var(--donkerblauw); }
+
+  /* FORMULAS */
+  .formula { background: #f0f4ff; border-left: 4px solid var(--blauw); border-radius: 0 6px 6px 0; padding: 10px 16px; font-family: monospace; font-size: 0.92rem; margin: 10px 0; color: var(--donkerblauw); }
+
+  /* INFO BOX */
+  .info-box { background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 0.88rem; }
+  .info-box strong { color: #b8860b; }
+
+  /* QUIZ */
+  .quiz-container { }
+  .quiz-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .quiz-progress-bar { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .quiz-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blauw), var(--paars)); border-radius: 4px; transition: width 0.4s; }
+  .quiz-progress-text { font-size: 0.82rem; color: #666; white-space: nowrap; }
+
+  .question-card { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 22px; margin-bottom: 18px; transition: border-color 0.2s; }
+  .question-card.answered { border-color: transparent; }
+  .question-num { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blauw); margin-bottom: 8px; }
+  .question-text { font-size: 0.97rem; font-weight: 600; margin-bottom: 16px; line-height: 1.5; }
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option-btn {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--grijs); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 11px 14px; cursor: pointer;
+    text-align: left; font-size: 0.9rem; transition: all 0.15s;
+    line-height: 1.45; color: var(--tekst);
+  }
+  .option-btn:hover:not(:disabled) { background: var(--lichtblauw); border-color: var(--blauw); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn .opt-letter { min-width: 22px; height: 22px; border-radius: 50%; background: white; border: 1.5px solid #bbb; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem; color: #666; flex-shrink: 0; margin-top: 1px; }
+  .option-btn.correct { background: #e8f8f0; border-color: var(--groen); }
+  .option-btn.correct .opt-letter { background: var(--groen); border-color: var(--groen); color: white; }
+  .option-btn.wrong { background: #fdf0ee; border-color: var(--rood); }
+  .option-btn.wrong .opt-letter { background: var(--rood); border-color: var(--rood); color: white; }
+  .option-btn.missed { background: #e8f8f0; border-color: var(--groen); opacity: 0.7; }
+
+  .feedback { margin-top: 12px; padding: 10px 14px; border-radius: 7px; font-size: 0.87rem; line-height: 1.5; }
+  .feedback.correct-fb { background: #e8f8f0; color: #1a6b3a; border: 1px solid #a8d5b8; }
+  .feedback.wrong-fb { background: #fdf0ee; color: #8b2010; border: 1px solid #f0b8b0; }
+  .feedback strong { font-weight: 700; }
+
+  /* SCORE CARD */
+  .score-card { text-align: center; padding: 40px 30px; }
+  .score-circle { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; color: white; }
+  .score-card h2 { font-size: 1.4rem; margin-bottom: 8px; }
+  .score-card p { color: #666; font-size: 0.93rem; margin-bottom: 20px; }
+  .score-breakdown { display: flex; justify-content: center; gap: 20px; margin-bottom: 24px; flex-wrap: wrap; }
+  .score-stat { text-align: center; }
+  .score-stat .num { font-size: 1.6rem; font-weight: 800; }
+  .score-stat .lbl { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+  .score-stat .num.green { color: var(--groen); }
+  .score-stat .num.red { color: var(--rood); }
+
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 7px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; }
+  .btn-primary { background: var(--blauw); color: white; }
+  .btn-primary:hover { background: var(--donkerblauw); }
+  .btn-outline { background: white; color: var(--blauw); border: 1.5px solid var(--blauw); }
+  .btn-outline:hover { background: var(--lichtblauw); }
+  .btn-purple { background: var(--paars); color: white; }
+  .btn-purple:hover { background: #3a1a60; }
+
+  /* HOME PAGE */
+  .domain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+  .domain-card { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 18px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+  .domain-card:hover { border-color: var(--blauw); box-shadow: 0 4px 14px rgba(26,95,168,0.12); transform: translateY(-2px); }
+  .domain-card .d-letter { display: inline-block; width: 36px; height: 36px; border-radius: 8px; background: var(--lichtblauw); color: var(--blauw); font-weight: 800; font-size: 1rem; text-align: center; line-height: 36px; margin-bottom: 10px; }
+  .domain-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; }
+  .domain-card p { font-size: 0.8rem; color: #666; line-height: 1.4; }
+  .domain-card .progress-mini { margin-top: 10px; height: 4px; background: var(--border); border-radius: 2px; }
+  .domain-card .progress-mini-fill { height: 100%; background: var(--groen); border-radius: 2px; transition: width 0.4s; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 10px 0; }
+  th { background: var(--donkerblauw); color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--grijs); }
+
+  /* HIDDEN */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    #sidebar { width: 100%; height: auto; position: relative; }
+    #main { margin-left: 0; }
+    .domain-grid { grid-template-columns: 1fr; }
+    .content { padding: 20px; }
+    .page-header { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="logo">
+    📊 Economie VWO
+    <span>Syllabus CE 2026 – Oefensite</span>
+  </div>
+  <nav>
+    <div class="nav-section">Overzicht</div>
+    <a onclick="showPage('home')" id="nav-home" class="active">🏠 Home</a>
+    <a onclick="showPage('diagnostisch')" id="nav-diagnostisch">🎯 Diagnostische Toets</a>
+    <div class="nav-section">Domeinen CE</div>
+    <a onclick="showPage('domein-d')" id="nav-domein-d">🏪 Domein D – Markt</a>
+    <a onclick="showPage('domein-e')" id="nav-domein-e">⏳ Domein E – Ruilen over de tijd</a>
+    <a onclick="showPage('domein-f')" id="nav-domein-f">🤝 Domein F – Samenwerken</a>
+    <a onclick="showPage('domein-g')" id="nav-domein-g">🎲 Domein G – Risico &amp; Informatie</a>
+    <a onclick="showPage('domein-h')" id="nav-domein-h">📈 Domein H – Welvaart &amp; Groei</a>
+    <a onclick="showPage('domein-i')" id="nav-domein-i">📉 Domein I – Conjunctuur</a>
+  </nav>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+  <!-- ==================== HOME ==================== -->
+  <div id="page-home" class="page active">
+    <div class="page-header">
+      <h1>📊 Economie VWO – Oefensite</h1>
+      <p>Gebaseerd op de officiële syllabus Centraal Examen 2026. Oefen per domein of doe eerst de diagnostische toets om te zien waar je staat.</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><span class="icon">🎯</span><h2>Diagnostische Toets – Waar sta jij?</h2></div>
+        <div class="card-body">
+          <p>Begin met <strong>10 willekeurige vragen</strong> uit alle CE-domeinen. Zo zie je meteen welke domeinen extra aandacht nodig hebben.</p>
+          <br>
+          <button class="btn btn-primary" onclick="showPage('diagnostisch')">▶ Start diagnostische toets</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">📚</span><h2>Domeinen Centraal Examen</h2></div>
+        <div class="card-body">
+          <p>Het CE heeft betrekking op de domeinen D t/m I, in combinatie met domein A (vaardigheden). Klik op een domein om de theorie te lezen en te oefenen.</p>
+          <div class="domain-grid" style="margin-top:16px">
+            <div class="domain-card" onclick="showPage('domein-d')">
+              <div class="d-letter">D</div>
+              <h3>Markt</h3>
+              <p>Vraag & aanbod, marktstructuren, prijselasticiteit, surplus en marktbeleid</p>
+              <div class="progress-mini"><div class="progress-mini-fill" id="prog-d" style="width:0%"></div></div>
+            </div>
+            <div class="domain-card" onclick="showPage('domein-e')">
+              <div class="d-letter">E</div>
+              <h3>Ruilen over de tijd</h3>
+              <p>Rente, lenen & sparen, pensioenen, staatsschuld, contante waarde</p>
+              <div class="progress-mini"><div class="progress-mini-fill" id="prog-e" style="width:0%"></div></div>
+            </div>
+            <div class="domain-card" onclick="showPage('domein-f')">
+              <div class="d-letter">F</div>
+              <h3>Samenwerken & Onderhandelen</h3>
+              <p>Speltheorie, Nash-evenwicht, gevangenendilemma, externe effecten</p>
+              <div class="progress-mini"><div class="progress-mini-fill" id="prog-f" style="width:0%"></div></div>
+            </div>
+            <div class="domain-card" onclick="showPage('domein-g')">
+              <div class="d-letter">G</div>
+              <h3>Risico & Informatie</h3>
+              <p>Asymmetrische informatie, moral hazard, averechtse selectie, verzekeren</p>
+              <div class="progress-mini"><div class="progress-mini-fill" id="prog-g" style="width:0%"></div></div>
+            </div>
+            <div class="domain-card" onclick="showPage('domein-h')">
+              <div class="d-letter">H</div>
+              <h3>Welvaart & Groei</h3>
+              <p>BBP, productiefunctie, inkomensverdeling, belasting, arbeidsmarkt</p>
+              <div class="progress-mini"><div class="progress-mini-fill" id="prog-h" style="width:0%"></div></div>
+            </div>
+            <div class="domain-card" onclick="showPage('domein-i')">
+              <div class="d-letter">I</div>
+              <h3>Goede tijden, slechte tijden</h3>
+              <p>Conjunctuur, IS-MB-GA model, monetair beleid, ECB, begrotingsbeleid</p>
+              <div class="progress-mini"><div class="progress-mini-fill" id="prog-i" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">ℹ️</span><h2>Over deze site</h2></div>
+        <div class="card-body">
+          <p>Deze oefensite is gebaseerd op de <strong>Syllabus Centraal Examen Economie VWO 2026</strong> (College voor Toetsen en Examens). De theorie en vragen zijn aangevuld vanuit standaard VWO-leermiddelen voor de bovenbouw (Pincode, LWEO, Percent, examenbundels).</p>
+          <ul>
+            <li>Na het aanvinken van een antwoord zie je direct of het goed of fout is</li>
+            <li>De uitleg verschijnt automatisch bij elk antwoord</li>
+            <li>De diagnostische toets kiest 10 willekeurige vragen uit alle domeinen</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DIAGNOSTISCH ==================== -->
+  <div id="page-diagnostisch" class="page">
+    <div class="page-header">
+      <div class="domain-tag">🎯 Diagnostische Toets</div>
+      <h1>Hoe goed ken jij de stof?</h1>
+      <p>10 willekeurige vragen uit alle CE-domeinen. Ontdek waar jij extra op moet studeren.</p>
+    </div>
+    <div class="content">
+      <div id="diagnostisch-quiz"></div>
+    </div>
+  </div>
+
+  <!-- ==================== DOMEIN D ==================== -->
+  <div id="page-domein-d" class="page">
+    <div class="page-header">
+      <div class="domain-tag">Domein D</div>
+      <h1>🏪 Markt</h1>
+      <p>Vraag & aanbod, marktvormen, prijselasticiteit, surplus en economische politiek</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><span class="icon">📖</span><h2>Introductie & Kernbegrippen</h2></div>
+        <div class="card-body">
+          <p>De markt coördineert via <strong>prijsvorming</strong> de keuzes van vragers en aanbieders. De <strong>evenwichtsprijs</strong> is de prijs waarbij de gevraagde hoeveelheid gelijk is aan de aangeboden hoeveelheid. Veranderingen in vraag of aanbod leiden tot een nieuw evenwicht.</p>
+
+          <p><strong>Vraag & Aanbod:</strong> De collectieve vraaglijn verschuift bij verandering van inkomen, behoeften, prijzen van andere goederen of het aantal vragers. De aanbodlijn verschuift bij prijswijzigingen van productiefactoren, technologische ontwikkeling, subsidies of heffingen.</p>
+
+          <p><strong>Elasticiteiten:</strong></p>
+          <div class="formula">Prijselasticiteit (Ep) = (% verandering gevraagde hoeveelheid) / (% prijsverandering)</div>
+          <div class="formula">Inkomenselasticiteit (Ey) = (% verandering gevraagde hoeveelheid) / (% inkomensverandering)</div>
+          <ul>
+            <li>|Ep| &gt; 1 → prijselastische vraag (luxe-/substitutiegoederen)</li>
+            <li>|Ep| &lt; 1 → prijsinelastische vraag (eerste levensbehoeften)</li>
+            <li>Ey &lt; 0 → inferieur goed | 0 &lt; Ey &lt; 1 → normaal goed | Ey &gt; 1 → luxegoed</li>
+          </ul>
+
+          <p><strong>Kosten & Opbrengsten:</strong> Totale Kosten (TK) = Totale Vaste Kosten (TVK) + Totale Variabele Kosten (TVK). Maximale winst wordt bereikt waar MK = MO (marginale kosten = marginale opbrengsten).</p>
+
+          <p><strong>Marktvormen:</strong></p>
+          <table>
+            <tr><th>Marktvorm</th><th>Aanbieders</th><th>Goederen</th><th>Toetreding</th></tr>
+            <tr><td>Volkomen concurrentie</td><td>Veel</td><td>Homogeen</td><td>Vrij</td></tr>
+            <tr><td>Monopolistische concurrentie</td><td>Veel</td><td>Heterogeen</td><td>Beperkt</td></tr>
+            <tr><td>Oligopolie</td><td>Weinig</td><td>Homo/Hetero</td><td>Beperkt</td></tr>
+            <tr><td>Monopolie</td><td>Één</td><td>Uniek</td><td>Geblokkeerd</td></tr>
+          </table>
+
+          <p><strong>Surplus & Doelmatigheid:</strong></p>
+          <ul>
+            <li><strong>Consumentensurplus:</strong> verschil tussen betalingsbereidheid en marktprijs</li>
+            <li><strong>Producentensurplus:</strong> verschil tussen marktprijs en minimale aanbodprijs</li>
+            <li><strong>Totaal surplus = CS + PS</strong> → maatstaf voor economische doelmatigheid</li>
+            <li>Monopolie → <strong>Harberger-driehoek</strong> (dead weight loss): verloren surplus</li>
+          </ul>
+
+          <div class="info-box">
+            <strong>💡 Let op voor het examen:</strong> Bij volkomen concurrentie is het totale surplus maximaal (Pareto-efficiënt). Marktmacht verlaagt het totale surplus. Een heffing of subsidie verschuift de aanbodlijn en verandert het surplus.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">✏️</span><h2>Oefenvragen Domein D – Markt</h2></div>
+        <div class="card-body">
+          <div id="quiz-d"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DOMEIN E ==================== -->
+  <div id="page-domein-e" class="page">
+    <div class="page-header">
+      <div class="domain-tag">Domein E</div>
+      <h1>⏳ Ruilen over de Tijd</h1>
+      <p>Rente, lenen & sparen, pensioenen, staatsschuld en intertemporele keuzes</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><span class="icon">📖</span><h2>Introductie & Kernbegrippen</h2></div>
+        <div class="card-body">
+          <p><strong>Intertemporele ruil</strong> is het verschuiven van koopkracht door de tijd heen. Lenen betekent toekomstig inkomen naar het heden halen; sparen verschuift consumptie naar de toekomst. De <strong>rente</strong> is de prijs van dit tijdruil.</p>
+
+          <p><strong>Rente</strong> is een beloning voor:</p>
+          <ul>
+            <li>Het uitstellen van consumptie (tijdsvoorkeur)</li>
+            <li>Het dragen van risico (risico-aversie)</li>
+            <li>Compensatie voor inflatie</li>
+          </ul>
+          <p>Verschillende rentes bestaan door verschillen in looptijd, risico en liquiditeit (staatsobligaties &lt; bedrijfsleningen &lt; consumptief krediet).</p>
+
+          <p><strong>Nominaal vs. Reëel:</strong></p>
+          <div class="formula">Reële rente ≈ Nominale rente – Inflatie</div>
+          <div class="formula">Reële waarde = Nominale waarde / Prijsindexcijfer × 100</div>
+
+          <p><strong>Pensioenstelsels:</strong></p>
+          <ul>
+            <li><strong>Omslagstelsel:</strong> huidige werkenden betalen de pensioenen van huidige gepensioneerden (AOW) → intergenerationele ruil</li>
+            <li><strong>Kapitaaldekkingsstelsel:</strong> je bouwt zelf pensioenkapitaal op dat belegd wordt (aanvullend pensioen)</li>
+            <li><strong>Waardevast:</strong> pensioen stijgt mee met inflatie | <strong>Welvaartsvast:</strong> stijgt mee met lonen</li>
+          </ul>
+
+          <p><strong>Overheid & Staatsschuld:</strong></p>
+          <div class="formula">Begrotingssaldo = Belastinginkomsten – Overheidsuitgaven</div>
+          <ul>
+            <li>Tekort = overheidstekort → leidt tot hogere staatsschuld</li>
+            <li><strong>Stabiliteits- en Groeipact (SGP):</strong> tekort max. 3% bbp | schuld max. 60% bbp</li>
+          </ul>
+
+          <p><strong>Voorraad- vs. Stroomgrootheden:</strong> Staatsschuld = voorraad (stand op moment); tekort/overschot = stroom (per jaar). Investering is een stroom die leidt tot een toename van de kapitaalgoederenvoorraad (voorraad).</p>
+
+          <div class="info-box">
+            <strong>💡 Let op voor het examen:</strong> Belastingspreiding in de tijd is een methode om welvaartsverliezen van belastingheffing te spreiden. De overheid heeft een bijzondere positie: een tekort is uitgestelde belastingheffing.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">✏️</span><h2>Oefenvragen Domein E – Ruilen over de tijd</h2></div>
+        <div class="card-body">
+          <div id="quiz-e"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DOMEIN F ==================== -->
+  <div id="page-domein-f" class="page">
+    <div class="page-header">
+      <div class="domain-tag">Domein F</div>
+      <h1>🤝 Samenwerken & Onderhandelen</h1>
+      <p>Speltheorie, Nash-evenwicht, gevangenendilemma en externe effecten</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><span class="icon">📖</span><h2>Introductie & Kernbegrippen</h2></div>
+        <div class="card-body">
+          <p><strong>Speltheorie</strong> analyseert strategische beslissingen waarbij de uitkomst voor een speler afhangt van de keuzes van andere spelers. Centraal staat de <strong>pay-off matrix</strong> die de uitkomsten voor elke combinatie van keuzes weergeeft.</p>
+
+          <p><strong>Kernbegrippen speltheorie:</strong></p>
+          <ul>
+            <li><strong>Dominante strategie:</strong> de beste keuze, ongeacht wat de andere speler doet</li>
+            <li><strong>Nash-evenwicht:</strong> situatie waarbij geen enkele speler baat heeft bij eenzijdig afwijken</li>
+            <li><strong>Gevangenendilemma:</strong> Nash-evenwicht is suboptimaal – beide spelers zouden er beter van worden als ze samenwerken, maar de dominante strategie leidt tot een slechtere uitkomst voor beiden</li>
+            <li><strong>Simultaan spel:</strong> spelers kiezen tegelijkertijd | <strong>Sequentieel:</strong> spelers kiezen na elkaar (spelboom)</li>
+            <li><strong>Herhaald spel:</strong> reputatie en tit-for-tat kunnen samenwerking bevorderen</li>
+            <li><strong>Zelfbinding:</strong> geloofwaardige beperking van eigen strategie om tegenstander te beïnvloeden</li>
+          </ul>
+
+          <p><strong>Suboptimale situaties:</strong></p>
+          <ul>
+            <li><strong>Collectieve goederen:</strong> niet-uitsluitbaar en niet-rivaliserend → meeliftersgedrag (free rider problem)</li>
+            <li><strong>Berovingsprobleem (hold-up):</strong> bij verzonken kosten kan een partij na investering worden 'beroofd' door de andere partij</li>
+            <li><strong>Externe effecten:</strong> positief (onderwijs, R&D) of negatief (milieuvervuiling) – niet in de marktprijs verwerkt</li>
+          </ul>
+
+          <p><strong>Internaliseren van externe effecten:</strong></p>
+          <ul>
+            <li>Negatief extern effect → heffing (Pigou-belasting) of vergunning → aanbodlijn omhoog</li>
+            <li>Positief extern effect → subsidie → aanbodlijn omlaag / meer productie</li>
+            <li>Eigendomsrechten (Coase-theorema): bij lage transactiekosten kan private onderhandeling leiden tot optimale uitkomst</li>
+          </ul>
+
+          <div class="info-box">
+            <strong>💡 Let op voor het examen:</strong> Bij een gevangenendilemma is de dominante strategie voor beide spelers om niet samen te werken, ook al zouden beiden beter af zijn bij samenwerking. Herhaalde spelen en reputatie vergroten de kans op samenwerking.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">✏️</span><h2>Oefenvragen Domein F – Samenwerken & Onderhandelen</h2></div>
+        <div class="card-body">
+          <div id="quiz-f"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DOMEIN G ==================== -->
+  <div id="page-domein-g" class="page">
+    <div class="page-header">
+      <div class="domain-tag">Domein G</div>
+      <h1>🎲 Risico & Informatie</h1>
+      <p>Asymmetrische informatie, moral hazard, averechtse selectie en beleggen</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><span class="icon">📖</span><h2>Introductie & Kernbegrippen</h2></div>
+        <div class="card-body">
+          <p>In de werkelijkheid is informatie nooit volledig en gelijk verdeeld. <strong>Asymmetrische informatie</strong> ontstaat wanneer de ene partij meer weet dan de andere. Dit kan leiden tot marktfalen.</p>
+
+          <p><strong>Begrippen informatie:</strong></p>
+          <ul>
+            <li><strong>Onvolledige informatie:</strong> leidt tot transactiekosten (zoeken, onderhandelen, controleren)</li>
+            <li><strong>Informatieasymmetrie:</strong> informatie-achterstand of -voorsprong van één partij</li>
+            <li><strong>Averechtse selectie (adverse selection):</strong> ongelijke informatie vóór de transactie → slechte producten verdrijven goede (markt voor tweedehands auto's, lemons-probleem)</li>
+            <li><strong>Moral hazard:</strong> ongelijke informatie ná de transactie → gedragsverandering doordat risico op anderen wordt afgewenteld (verzekeringnemer rijdt roekelozer)</li>
+          </ul>
+
+          <p><strong>Principaal-agentrelatie:</strong></p>
+          <ul>
+            <li><strong>Principaal:</strong> opdrachtgever (aandeelhouder, verzekeraar, bank)</li>
+            <li><strong>Agent:</strong> opdrachtnemer (directeur, verzekerde, lener)</li>
+            <li>Informatieasymmetrie + tegengestelde belangen → principal-agent probleem</li>
+            <li>Oplossing: prikkels (bonussen, eigen risico, bonus-malussysteem), monitoring, contracten</li>
+          </ul>
+
+          <p><strong>Verzekeren:</strong></p>
+          <ul>
+            <li>Risicoaversie maakt verzekeren aantrekkelijk: zekerheid heeft waarde</li>
+            <li><strong>Averechtse selectie beperken:</strong> verplichte verzekering, collectieve verzekering</li>
+            <li><strong>Moral hazard beperken:</strong> eigen risico, no-claim, bonus-malussysteem</li>
+          </ul>
+
+          <p><strong>Beleggen:</strong></p>
+          <ul>
+            <li><strong>Obligatie:</strong> lening aan bedrijf/overheid → vaste rente, lager risico</li>
+            <li><strong>Aandeel:</strong> eigendomsbewijs → dividend + koerswinst/verlies, hoger risico</li>
+            <li>Hogere risico → hogere verwachte rendement (risicopremie)</li>
+          </ul>
+
+          <div class="info-box">
+            <strong>💡 Let op voor het examen:</strong> Averechtse selectie treedt op vóór de transactie; moral hazard ná de transactie. Bij een principaal-agentrelatie zijn er altijd vier elementen: principaal, agent, asymmetrische informatie én tegengestelde belangen.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">✏️</span><h2>Oefenvragen Domein G – Risico & Informatie</h2></div>
+        <div class="card-body">
+          <div id="quiz-g"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DOMEIN H ==================== -->
+  <div id="page-domein-h" class="page">
+    <div class="page-header">
+      <div class="domain-tag">Domein H</div>
+      <h1>📈 Welvaart & Groei</h1>
+      <p>BBP, inkomensverdeling, belasting, arbeidsmarkt en structurele groei</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><span class="icon">📖</span><h2>Introductie & Kernbegrippen</h2></div>
+        <div class="card-body">
+          <p>Domein H gaat over de oorzaken van <strong>economische groei</strong> en de verdeling van welvaart. Het BBP meten we op drie manieren; structurele groei wordt bepaald door productiefactoren en technologie.</p>
+
+          <p><strong>BBP berekeningswijzen:</strong></p>
+          <div class="formula">Bestedingsmethode: Y = C + I + O + E – M</div>
+          <div class="formula">Toegevoegde-waardemethode: Y = ΣToegevoegde waarden</div>
+          <div class="formula">Inkomensmethode: Y = arbeidsinkomen + kapitaalinkomen + afschrijvingen</div>
+
+          <p><strong>Productiefunctie (structurele groei):</strong></p>
+          <div class="formula">Y = A · f(K, L)</div>
+          <ul>
+            <li>A = totale factorproductiviteit (technologie, instituties, onderwijs)</li>
+            <li>K = kapitaal | L = arbeid</li>
+            <li>Afnemende meeropbrengsten: elke extra eenheid K of L levert minder op</li>
+            <li>Constante schaalopbrengsten: verdubbeling K én L → verdubbeling Y</li>
+          </ul>
+
+          <p><strong>Inkomensverdeling:</strong></p>
+          <ul>
+            <li><strong>Gini-coëfficiënt:</strong> 0 = volledige gelijkheid | 1 = maximale ongelijkheid</li>
+            <li><strong>AIQ (Arbeidsinkomensquote):</strong> aandeel arbeidsinkomen in nationaal inkomen</li>
+            <li><strong>Primair inkomen:</strong> vóór belastingen/uitkeringen | <strong>Secundair:</strong> ná herverdeling</li>
+            <li>Nivelleren = inkomensverschillen verkleinen; denivelleren = vergroten</li>
+          </ul>
+
+          <p><strong>Belastingen:</strong></p>
+          <ul>
+            <li>Progressief: gemiddeld tarief stijgt met inkomen</li>
+            <li>Degressief: gemiddeld tarief daalt met inkomen</li>
+            <li>Vlaktaks: één marginaal tarief voor iedereen</li>
+            <li><strong>Belastingwig:</strong> verschil bruto arbeidskosten werkgever en netto inkomen werknemer</li>
+          </ul>
+
+          <p><strong>Werkloosheid:</strong></p>
+          <ul>
+            <li><strong>Structurele werkloosheid:</strong> langdurig, door mismatch aanbod/vraag of te hoge loonkosten (inclusief frictiewerkloosheid)</li>
+            <li><strong>Conjuncturele werkloosheid:</strong> tijdelijk, door laagconjunctuur</li>
+          </ul>
+
+          <p><strong>Welvaart vs. Welzijn:</strong> Welvaart = behoeftebevrediging van schaarse goederen. Welzijn = ook niet-schaarse goederen. Groen bbp = bbp minus milieuschade plus milieuverbetering.</p>
+
+          <div class="info-box">
+            <strong>💡 Let op voor het examen:</strong> Er kan een afruil zijn tussen doelmatigheid en rechtvaardigheid bij herverdeling. Hogere belastingen kunnen prikkels verminderen om te werken of te ondernemen.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">✏️</span><h2>Oefenvragen Domein H – Welvaart & Groei</h2></div>
+        <div class="card-body">
+          <div id="quiz-h"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DOMEIN I ==================== -->
+  <div id="page-domein-i" class="page">
+    <div class="page-header">
+      <div class="domain-tag">Domein I</div>
+      <h1>📉 Goede tijden, slechte tijden</h1>
+      <p>Conjunctuur, IS-MB-GA model, monetair beleid, ECB en begrotingsbeleid</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><span class="icon">📖</span><h2>Introductie & Kernbegrippen</h2></div>
+        <div class="card-body">
+          <p>Domein I analyseert <strong>conjunctuurschommelingen</strong>: waarom wijkt de feitelijke productie af van de potentiële productie, en welk beleid kan dit corrigeren?</p>
+
+          <p><strong>Output gap:</strong></p>
+          <div class="formula">Output gap = Feitelijke productie (Y) – Potentiële productie (Y*)</div>
+          <ul>
+            <li>Output gap &gt; 0 → hoogconjunctuur: overbesteding, lage werkloosheid, risico op inflatie</li>
+            <li>Output gap &lt; 0 → laagconjunctuur: onderbesteding, hoge werkloosheid</li>
+          </ul>
+
+          <p><strong>Reële vs. nominale grootheden:</strong></p>
+          <div class="formula">Reële rente = (1 + nominale rente) / (1 + verwachte inflatie) – 1</div>
+          <p>Geldillusie: mensen denken in nominale in plaats van reële waarden.</p>
+
+          <p><strong>Keynesiaans kruis & multiplier:</strong></p>
+          <ul>
+            <li>Consumptie stijgt bij hoger besteedbaar inkomen (marginale consumptiequote)</li>
+            <li><strong>Multiplier:</strong> effect van hogere bestedingen wordt vergroot doordat bestedingen van de een het inkomen van een ander zijn</li>
+            <li>Multiplier = 1 / (spaarquote + belastingquote)</li>
+          </ul>
+
+          <p><strong>IS-MB-GA model:</strong></p>
+          <ul>
+            <li><strong>IS-curve:</strong> dalend – hogere rente → lagere bestedingen → lager evenwichtsinkomen</li>
+            <li><strong>MB-curve:</strong> horizontaal – centrale bank stelt rente in afhankelijkheid van inflatie</li>
+            <li><strong>GA-curve:</strong> stijgend – hogere inflatie → lagere reële lonen → meer productie (op KT)</li>
+          </ul>
+
+          <p><strong>Begrotingsbeleid:</strong></p>
+          <ul>
+            <li><strong>Anticyclisch:</strong> stimuleren bij laagconjunctuur (hogere O of lagere B) | verkrappen bij hoogconjunctuur</li>
+            <li><strong>Automatische stabilisatoren:</strong> belastingen dalen en uitkeringen stijgen automatisch in laagconjunctuur</li>
+            <li>Inverdieneffecten: stimulerend beleid genereert hogere belastingopbrengsten → tekort kleiner dan geraamd</li>
+          </ul>
+
+          <p><strong>Monetair beleid (ECB):</strong></p>
+          <ul>
+            <li>ECB-doel: prijsstabiliteit (inflatie ≈ 2%) – enkelvoudig mandaat</li>
+            <li>Hogere rente → minder kredietverlening → lagere geldhoeveelheid → lagere inflatie</li>
+            <li><strong>Geldschepping:</strong> banken creëren tegelijk krediet én depositobewijs</li>
+            <li><strong>Trilemma:</strong> vrij kapitaalverkeer + vaste wisselkoers + zelfstandig monetair beleid: slechts 2 van 3 mogelijk</li>
+          </ul>
+
+          <p><strong>Economische scholen:</strong></p>
+          <table>
+            <tr><th>School</th><th>IS-curve</th><th>MB-curve</th><th>Beleid</th></tr>
+            <tr><td>Keynesianen</td><td>Steil</td><td>Verschuift weinig</td><td>Begrotingsbeleid krachtig</td></tr>
+            <tr><td>Monetaristen</td><td>Vlak</td><td>Verschuift veel</td><td>Monetair beleid krachtig</td></tr>
+            <tr><td>Neo-klassieken</td><td>–</td><td>–</td><td>GA verticaal → geen effect</td></tr>
+          </table>
+
+          <div class="info-box">
+            <strong>💡 Let op voor het examen:</strong> Bij het trilemma van monetair beleid zijn vrij kapitaalverkeer, vaste wisselkoers en zelfstandig monetair beleid de drie opties waarvan er slechts twee tegelijk mogelijk zijn. De eurozone kiest voor vrij kapitaalverkeer en vaste wisselkoers → geen zelfstandig monetair beleid per land.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="icon">✏️</span><h2>Oefenvragen Domein I – Conjunctuur</h2></div>
+        <div class="card-body">
+          <div id="quiz-i"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ============================================================
+// VRAGENBANK
+// ============================================================
+const vragen = {
+  d: [
+    {
+      v: "Bij een prijselasticiteit van de vraag van –2,5 is de vraag:",
+      o: ["Prijsinelastisch, want |Ep| < 1","Prijselastisch, want |Ep| > 1","Eenheidselastisch, want |Ep| = 1","Geen van bovenstaande"],
+      a: 1,
+      u: "Bij |Ep| > 1 is er sprake van een prijselastische vraag. Een prijsverhoging van 1% leidt dan tot een daling van de gevraagde hoeveelheid met meer dan 1%. Dit geldt vaak voor luxegoederen of producten met veel substituten."
+    },
+    {
+      v: "De collectieve vraaglijn verschuift naar rechts wanneer:",
+      o: ["De prijs van het goed daalt","Het inkomen van consumenten stijgt (bij een normaal goed)","De prijs van een complementair goed stijgt","Het aantal aanbieders toeneemt"],
+      a: 1,
+      u: "Bij een normaal goed leidt een inkomenstoename tot hogere vraag bij elke prijs, waardoor de vraaglijn naar rechts verschuift. Een prijsdaling van het goed zelf leidt tot een beweging langs de lijn, niet tot een verschuiving."
+    },
+    {
+      v: "Een bedrijf in volkomen concurrentie maximaliseert zijn winst waar:",
+      o: ["Totale opbrengst = totale kosten","Marginale kosten = marginale opbrengsten","Gemiddelde kosten minimaal zijn","Totale winst = nul"],
+      a: 1,
+      u: "De winstmaximalisatie-regel is MK = MO. Bij volkomen concurrentie is de marktprijs gelijk aan MO. Het bedrijf produceert zolang elke extra eenheid meer opbrengt dan ze kost."
+    },
+    {
+      v: "Wat is het consumentensurplus?",
+      o: ["De totale omzet van producenten","Het verschil tussen de marktprijs en de maximale betalingsbereidheid van alle kopers samen","De winst die de producent maakt boven zijn minimale aanbodprijs","Het verschil tussen de evenwichtsprijs en de minimumprijs"],
+      a: 1,
+      u: "Consumentensurplus is het voordeel dat consumenten hebben omdat zij minder betalen dan zij bereid waren te betalen. Het is de oppervlakte boven de prijs en onder de vraaglijn."
+    },
+    {
+      v: "Een monopolist heft een prijs boven zijn marginale kosten. Dit leidt tot:",
+      o: ["Een toename van het totale surplus ten opzichte van volkomen concurrentie","Een Harberger-driehoek (dead weight loss): verloren surplus","Maximale economische doelmatigheid","Een toename van het consumentensurplus"],
+      a: 1,
+      u: "Een monopolist produceert minder dan bij volkomen concurrentie (MK = MO < p). Het verschil in surplus (de Harberger-driehoek) is welvaart die verloren gaat – niemand profiteert ervan."
+    },
+    {
+      v: "De aanbodlijn van een goed verschuift naar links (omhoog) wanneer:",
+      o: ["De prijs van het goed stijgt","De prijs van een productiefactor stijgt","Er meer aanbieders toetreden tot de markt","Er een subsidie op het goed wordt ingevoerd"],
+      a: 1,
+      u: "Hogere kosten van productiefactoren (bijv. hogere lonen of energieprijzen) maken productie duurder. Aanbieders bieden bij elke prijs minder aan, waardoor de aanbodlijn naar links/omhoog verschuift."
+    },
+    {
+      v: "Welke marktvorm kenmerkt zich door veel aanbieders van heterogene goederen en beperkte toetredingsmogelijkheden?",
+      o: ["Volkomen concurrentie","Monopolie","Oligopolie","Monopolistische concurrentie"],
+      a: 3,
+      u: "Monopolistische concurrentie: veel aanbieders, heterogene goederen (productdifferentiatie) en beperkte toetredingsmogelijkheden. Denk aan restaurants, kappers of kledingmerken."
+    },
+    {
+      v: "Een inkomenselasticiteit van –0,4 betekent dat het goed een … is.",
+      o: ["Luxegoed","Normaal goed","Inferieur goed","Complementair goed"],
+      a: 2,
+      u: "Bij een negatieve inkomenselasticiteit daalt de vraag als het inkomen stijgt. Dit is kenmerkend voor inferieure goederen, zoals goedkoop brood of tweedehands kleding."
+    },
+    {
+      v: "Een overheid legt een belasting op een goed. Wat is de invloed op het totale surplus (consumentensurplus + producentensurplus)?",
+      o: ["Het totale surplus neemt toe","Het totale surplus blijft gelijk","Het totale surplus neemt af (dead weight loss)","Het consumentensurplus neemt toe maar het producentensurplus neemt af met hetzelfde bedrag"],
+      a: 2,
+      u: "Een belasting verhoogt de prijs voor consumenten en verlaagt de prijs voor producenten. De transacties die daardoor niet meer plaatsvinden, leiden tot een verlies aan totaal surplus (dead weight loss). De belastingopbrengst compenseert dit slechts gedeeltelijk."
+    },
+    {
+      v: "Wat is de break-even-afzet?",
+      o: ["De hoeveelheid waarbij de winst maximaal is","De hoeveelheid waarbij MK = MO","De hoeveelheid waarbij totale opbrengst = totale kosten (winst = 0)","De hoeveelheid waarbij gemiddelde variabele kosten minimaal zijn"],
+      a: 2,
+      u: "De break-even-afzet is de productieomvang waarbij total opbrengst gelijk is aan totale kosten: de winst is dan nul. Onder de break-even-afzet maakt de onderneming verlies; erboven winst."
+    }
+  ],
+  e: [
+    {
+      v: "Wat verstaan we onder de reële rente?",
+      o: ["De rente die een bank adverteert voor een spaarrekening","De nominale rente gecorrigeerd voor inflatie","De rente die de overheid betaalt op staatsobligaties","De rente na aftrek van belastingen"],
+      a: 1,
+      u: "De reële rente geeft de koopkrachttoename van vermogen weer: reële rente ≈ nominale rente – inflatie. Als de nominale spaarrente 3% is en de inflatie 2%, dan is de reële rente 1%."
+    },
+    {
+      v: "Het omslagstelsel houdt in dat:",
+      o: ["Iedereen zijn eigen pensioen spaart in een persoonlijk fonds","Huidige werkenden betalen de pensioenen van huidige gepensioneerden","Pensioenpremies worden belegd op de kapitaalmarkt","De overheid garanties geeft op beleggingsrendementen"],
+      a: 1,
+      u: "Het omslagstelsel is een pay-as-you-go systeem (zoals de AOW): huidige werkenden financieren direct de uitkeringen aan huidige gepensioneerden. Dit is intergenerationele ruil."
+    },
+    {
+      v: "Het Stabiliteits- en Groeipact stelt dat het begrotingstekort van eurolanden maximaal … procent van het bbp mag zijn.",
+      o: ["1%","2%","3%","5%"],
+      a: 2,
+      u: "Het Stabiliteits- en Groeipact (SGP) kent twee normen: (1) begrotingstekort max. 3% bbp en (2) staatsschuldquote max. 60% bbp. Deze normen zijn afgesproken om de financiële stabiliteit in de eurozone te bewaken."
+    },
+    {
+      v: "Een voorbeeldje van een stroomgrootheid is:",
+      o: ["De staatsschuld op 1 januari","De waarde van de kapitaalgoederenvoorraad","Het begrotingstekort per jaar","Het spaartegoed van een huishouden"],
+      a: 2,
+      u: "Een stroomgrootheid meet een bedrag over een periode (bijv. per jaar): investeringen, BBP, inkomen, begrotingstekort. Een voorraadgrootheid meet een stand op een moment: staatsschuld, kapitaalvoorraad, spaartegoed."
+    },
+    {
+      v: "Rente is GEEN beloning voor:",
+      o: ["Het uitstellen van consumptie (tijdsvoorkeur)","Het dragen van risico","Compensatie voor inflatie","Arbeidsinspanning van de lener"],
+      a: 3,
+      u: "Rente beloont de uitlener voor: (1) tijdsvoorkeur – je kunt nu niet consumeren, (2) risico – er is kans op wanbetaling, (3) inflatie – geld is minder waard bij terugbetaling. Arbeidsinspanning is loon, geen rente."
+    },
+    {
+      v: "Een welvaartsvast pensioen stijgt mee met:",
+      o: ["De inflatie","De loonontwikkeling in de economie","De beleggingsrendementen van het pensioenfonds","De rente op staatsobligaties"],
+      a: 1,
+      u: "Welvaartsvast = meegroeiend met de loonontwikkeling (koopkracht houdt gelijke tred met werkenden). Waardevast = meegroeiend met inflatie (koopkracht blijft gelijk, maar je wordt niet rijker ten opzichte van werkenden)."
+    },
+    {
+      v: "Lenen is vanuit intertemporeel perspectief te omschrijven als:",
+      o: ["Toekomstige koopkracht verschuiven naar het heden","Huidige koopkracht verschuiven naar de toekomst","Risico overdragen aan een andere partij","Intertemporele ruil waarbij rente niet relevant is"],
+      a: 0,
+      u: "Lenen = toekomstig inkomen naar het heden halen: je consumeert nu meer dan je verdient, en betaalt dit later terug. Sparen is het omgekeerde: huidige koopkracht verschuiven naar de toekomst."
+    },
+    {
+      v: "Waarom is de rente op staatsobligaties doorgaans lager dan op bedrijfsleningen?",
+      o: ["Staatsobligaties hebben een langere looptijd","Staatsobligaties zijn minder liquide","Staatsobligaties kennen een lager risico op wanbetaling","De overheid mag zelf de rente bepalen"],
+      a: 2,
+      u: "Rente varieert op basis van risico, looptijd en liquiditeit. De overheid (staat) heeft een veel lager risico op wanbetaling dan bedrijven, waardoor beleggers genoegen nemen met een lagere rente."
+    },
+    {
+      v: "De staatsschuld stijgt wanneer:",
+      o: ["Er een begrotingsoverschot is","Er een begrotingstekort is","De economie groeit","De rente op staatsobligaties daalt"],
+      a: 1,
+      u: "De staatsschuld (voorraadgrootheid) stijgt elk jaar met het begrotingstekort (stroomgrootheid). Bij een tekort geeft de overheid meer uit dan ze ontvangt en moet ze lenen, waardoor de schuld toeneemt."
+    },
+    {
+      v: "Belastingspreiding in de tijd is een maatregel waarbij:",
+      o: ["Iedereen hetzelfde belastingpercentage betaalt","Welvaartsverliezen van belastingheffing worden gespreid door nu te lenen en later hogere belastingen te heffen","Belastingen worden verlaagd in goede tijden","Investeringen worden uitgesteld naar betere economische tijden"],
+      a: 1,
+      u: "Belastingspreiding houdt in dat de overheid nu een tekort accepteert (lenen) om later hogere belastingen te heffen. Dit spreidt de lasten over meerdere generaties en minimaliseert de totale welvaartskostenvan belastingheffing."
+    }
+  ],
+  f: [
+    {
+      v: "In een gevangenendilemma geldt dat:",
+      o: ["Beide spelers altijd samenwerken","De dominante strategie voor beide spelers leidt tot een suboptimaal Nash-evenwicht","Slechts één speler een dominante strategie heeft","Het Nash-evenwicht optimaal is voor beide spelers"],
+      a: 1,
+      u: "Bij het gevangenendilemma hebben beide spelers een dominante strategie (niet samenwerken), maar het resultaat is voor beide slechter dan bij samenwerking. Dit is het klassieke marktfalen bij strategische interactie."
+    },
+    {
+      v: "Een Nash-evenwicht is een situatie waarbij:",
+      o: ["Alle spelers de hoogst mogelijke pay-off ontvangen","Geen enkele speler voordeel heeft bij eenzijdig afwijken van zijn strategie","Alle spelers dezelfde keuze maken","De overheid ingrijpt om het evenwicht te bereiken"],
+      a: 1,
+      u: "Een Nash-evenwicht is stabiel: gegeven de keuzes van de andere spelers, wil geen enkele speler zijn eigen keuze veranderen. Het is niet per se het meest efficiënte resultaat."
+    },
+    {
+      v: "Wat zijn externe effecten?",
+      o: ["Kosten of baten voor derden die niet in de marktprijs zijn opgenomen","Effecten van buitenlandse handel op de binnenlandse economie","Resultaten van overheidsbeleid op de markt","Kostenbesparingen door schaalvoordelen"],
+      a: 0,
+      u: "Externe effecten zijn kosten (negatief) of baten (positief) die worden opgelegd aan derden buiten de transactie, zonder dat die daarvoor gecompenseerd worden of voor hoeven te betalen. Milieuschade door een fabriek is een klassiek negatief extern effect."
+    },
+    {
+      v: "Meeliftersgedrag (free rider-probleem) treedt op bij:",
+      o: ["Private goederen met hoge prijzen","Collectieve goederen die niet-uitsluitbaar zijn","Goederen met veel substituten","Inferieure goederen"],
+      a: 1,
+      u: "Bij collectieve goederen (niet-uitsluitbaar en niet-rivaliserend) kun je mensen die niet betalen niet uitsluiten van consumptie. Dat geeft een prikkel om niet bij te dragen en toch te profiteren."
+    },
+    {
+      v: "Zelfbinding in de speltheorie houdt in dat een speler:",
+      o: ["Zijn eigen strategie aanpast aan die van de tegenstander","Zijn eigen keuzevrijheid geloofwaardig beperkt om de tegenstander te beïnvloeden","Altijd de dominante strategie kiest","Gebruik maakt van asymmetrische informatie"],
+      a: 1,
+      u: "Zelfbinding maakt een belofte of dreiging geloofwaardig door de eigen flexibiliteit op te geven. Voorbeeld: een bedrijf investeert in capaciteit om geloofwaardig te dreigen met een prijzenoorlog bij toetreding van een concurrent."
+    },
+    {
+      v: "Een negatief extern effect wordt geïnternaliseerd door:",
+      o: ["Een subsidie aan de producent","Een heffing op de productie ter hoogte van de externe kosten","Een maximumprijs instellen","Het goed tot collectief goed te maken"],
+      a: 1,
+      u: "Een Pigou-heffing gelijk aan de externe kosten zorgt ervoor dat de producent de volledige maatschappelijke kosten meeweegt in zijn productiekeuze. De aanbodlijn verschuift omhoog en de productie daalt naar het maatschappelijk optimum."
+    },
+    {
+      v: "Een berovingsprobleem (hold-up probleem) ontstaat wanneer:",
+      o: ["Consumenten informatie achterhouden bij het kopen","Een partij na het doen van verzonken (niet-terugvorderbare) investeringen kan worden uitgebuit door de andere partij","De overheid belasting heft op investeringen","Een monopolist prijsdiscriminatie toepast"],
+      a: 1,
+      u: "Verzonken kosten (sunk costs) zijn kosten die al zijn gemaakt en niet kunnen worden teruggedraaid. Nadat partij A heeft geïnvesteerd, kan partij B de onderhandelingspositie uitbuiten – want A kan de investering niet terugkrijgen."
+    },
+    {
+      v: "Een herhaald spel verschilt van een eenmalig spel doordat:",
+      o: ["De pay-offs in elke ronde veranderen","Reputatie en toekomstige interacties samenwerking kunnen bevorderen","Er meer spelers aan deelnemen","De spelregels elke ronde worden aangepast"],
+      a: 1,
+      u: "In een herhaald spel speelt reputatie een rol. Als spelers weten dat ze elkaar vaker tegenkomen, loont het minder om te 'bedriegen' – de langetermijn-voordelen van samenwerking overtreffen de kortetermijn-winst van afwijken."
+    },
+    {
+      v: "Welke uitspraak over een simultaan spel is correct?",
+      o: ["Spelers kiezen na elkaar, waarna het resultaat bekend is","Spelers kiezen tegelijkertijd zonder de keuze van de ander te kennen","De eerste speler heeft altijd een voordeel","Het spel wordt gespeeld met een spelboom"],
+      a: 1,
+      u: "Bij een simultaan spel kiezen alle spelers op hetzelfde moment. Ze weten niet wat de ander kiest. Dit modelleert situaties zoals prijszetting door oligopolisten of het indienen van offertes."
+    },
+    {
+      v: "Welke van de volgende maatregelen internaliseren een positief extern effect?",
+      o: ["Heffing op productie","Maximumprijs","Subsidie op de productie","Eigendomsrecht op de positieve effecten"],
+      a: 2,
+      u: "Positieve externe effecten leiden tot onderproductie op de vrije markt. Een subsidie verlaagt de effectieve productiekosten, verschuift de aanbodlijn naar rechts/omlaag en stimuleert meer productie richting het maatschappelijk optimum."
+    }
+  ],
+  g: [
+    {
+      v: "Averechtse selectie treedt op:",
+      o: ["Na het afsluiten van een verzekering doordat de verzekerde meer risico neemt","Vóór het afsluiten van een transactie doordat ongelijke informatie de goede producten/klanten uitsluit","Bij het instellen van een eigen risico bij een verzekering","Als de overheid verplichte verzekeringen invoert"],
+      a: 1,
+      u: "Averechtse selectie is een pre-contractueel probleem: door informatieasymmetrie vóór de transactie worden slechte risico's (hoge risicoverzekerten, slechte auto's) relatief vaker aangeboden, terwijl goede risico's de markt verlaten."
+    },
+    {
+      v: "Moral hazard ontstaat doordat:",
+      o: ["Spaarders meer geld investeren bij lage rente","Na het afsluiten van een contract een partij zijn gedrag zo aanpast dat de risico's op de ander worden afgewenteld","Beleggers altijd kiezen voor de laagst-risico belegging","Banken te hoge rentes vragen aan kleine ondernemers"],
+      a: 1,
+      u: "Moral hazard is een post-contractueel probleem: nadat het contract is afgesloten (bijv. een verzekering), verandert de verzekerde zijn gedrag (rijdt roekelozer, sport minder) omdat hij de negatieve gevolgen deels op de verzekeraar kan afwentelen."
+    },
+    {
+      v: "Bij een principaal-agentrelatie is er altijd sprake van:",
+      o: ["Gelijke informatie maar tegengestelde belangen","Asymmetrische informatie én tegengestelde belangen","Gelijke belangen maar ongelijke machtsposities","Een overheid die toezicht houdt op beide partijen"],
+      a: 1,
+      u: "De vier elementen van een principaal-agentrelatie zijn: (1) principaal, (2) agent, (3) asymmetrische informatie en (4) tegengestelde belangen. Zonder beide laatste elementen is er geen principaal-agentprobleem."
+    },
+    {
+      v: "Waarom is een verplichte zorgverzekering een oplossing voor averechtse selectie?",
+      o: ["Het eigen risico dwingt verzekerde tot goed gedrag","Iedereen moet meedoen, waardoor risicoselectie wordt voorkomen en goede risico's in de pool blijven","De overheid garandeert dat alle schades worden vergoed","Verzekeraars mogen hogere premies vragen aan hoge risico's"],
+      a: 1,
+      u: "Bij vrijwillige verzekering kiezen gezonde mensen er soms voor niet te verzekeren (averechtse selectie: alleen zieken verzekeren zich). Verplichte verzekering houdt iedereen in de pool, wat kruissubsidiëring mogelijk maakt en de premie betaalbaar houdt."
+    },
+    {
+      v: "Een eigen risico bij een verzekering is een middel om:",
+      o: ["Averechtse selectie te voorkomen","Moral hazard te beperken doordat de verzekerde een financieel belang heeft bij het voorkomen van schade","De premie te verhogen voor hoge risico's","Verplichte solidariteit af te dwingen"],
+      a: 1,
+      u: "Eigen risico geeft de verzekerde een financieel prikkel om voorzichtig te zijn. Als je zelf de eerste €500 betaalt bij schade, ga je daar voorzichtiger mee om. Dit beperkt moral hazard."
+    },
+    {
+      v: "Welke uitspraak over aandelen en obligaties is juist?",
+      o: ["Aandelen hebben altijd een hogere vaste rente dan obligaties","Obligaties hebben een hoger verwacht rendement dan aandelen vanwege hun lagere risico","Aandelen hebben een hoger verwacht rendement dan obligaties, maar ook een hoger risico","Obligaties geven recht op winstdeling van een onderneming"],
+      a: 2,
+      u: "Bij beleggen geldt: hoger risico = hogere risicopremie = hoger verwacht rendement. Aandelen zijn risicovoller (dividend onzeker, koers fluctueert), obligaties hebben een vaste rente maar lager rendement. Obligatiehouders zijn schuldeisers; aandeelhouders zijn mede-eigenaren."
+    },
+    {
+      v: "Onvolledige informatie leidt tot:",
+      o: ["Perfecte marktuitkomsten doordat spelers extra onderzoek doen","Transactiekosten: kosten voor zoeken, onderhandelen en controleren","Een toename van het producentensurplus","Lagere prijzen door meer concurrentie"],
+      a: 1,
+      u: "Als je niet precies weet wat je koopt (kwaliteit, prijs), moet je zoeken en onderhandelen. Deze transactiekosten (zoekkosten, informatiekosten, contractkosten) verlagen de totale welvaart."
+    },
+    {
+      v: "Een bank vraagt onderpand bij een lening. Welk probleem lost dit op?",
+      o: ["Moral hazard: de bank wil verzekerd zijn van terugbetaling","Averechtse selectie: het schept informatie over de kredietwaardigheid van de lener","Externe effecten van lenen","Het gevangenendilemma tussen bank en lener"],
+      a: 1,
+      u: "Onderpand (zoals een huis) helpt het probleem van asymmetrische informatie op te lossen. De lener geeft daarmee een signaal over zijn bereidheid om terug te betalen. Mensen met weinig vertrouwen in zichzelf zullen geen riskant onderpand geven."
+    },
+    {
+      v: "De relatie tussen aandeelhouders (principaal) en de directeur van een bedrijf (agent) is een voorbeeld van:",
+      o: ["Averechtse selectie","Een principaal-agentprobleem","Een gevangenendilemma","Geldschepping"],
+      a: 1,
+      u: "Aandeelhouders (principaal) hebben de directeur (agent) aangesteld om het bedrijf te leiden. De directeur heeft meer informatie over dagelijkse operaties. Tegengestelde belangen (bijv. bonussen vs. aandeelhouderswaarde) en asymmetrische informatie vormen het klassieke principaal-agentprobleem."
+    },
+    {
+      v: "Risicoaversie houdt in dat iemand:",
+      o: ["Altijd de keuze met het hoogste verwachte rendement kiest","Een zekere uitkomst verkiest boven een onzekere uitkomst met hetzelfde verwachte rendement","Nooit een verzekering afsluit","Alleen in staatsobligaties belegt"],
+      a: 1,
+      u: "Risicoaversie betekent dat mensen zekerheid waardevol vinden: ze verkiezen €100 zeker boven een 50% kans op €200 (ook al is de verwachte waarde gelijk). Dit verklaart waarom mensen bereid zijn premie te betalen voor verzekeringen."
+    }
+  ],
+  h: [
+    {
+      v: "Het BBP berekend via de bestedingsmethode is gelijk aan:",
+      o: ["Consumptie + Investeringen","Consumptie + Investeringen + Overheidsbestedingen + Export – Import","Arbeidsinkomen + Kapitaalinkomen","Som van alle toegevoegde waarden + import"],
+      a: 1,
+      u: "Y = C + I + O + E – M. Dit is de macro-economische kringloopformule waarbij de som van alle binnenlandse bestedingen én netto-export gelijk is aan het BBP."
+    },
+    {
+      v: "De Gini-coëfficiënt is een maatstaf voor:",
+      o: ["De omvang van het BBP per hoofd","De mate van inkomensongelijkheid in een land","De inflatieontwikkeling over de tijd","De verhouding tussen overheidsuitgaven en BBP"],
+      a: 1,
+      u: "De Gini-coëfficiënt loopt van 0 (perfecte gelijkheid) tot 1 (maximale ongelijkheid). Hoe hoger de Gini, hoe ongelijker de inkomensverdeling. Nederland heeft een relatief lage Gini (~0,30)."
+    },
+    {
+      v: "De productiefunctie Y = A·f(K, L) laat zien dat de potentiële productie stijgt wanneer:",
+      o: ["De inflatie daalt","De overheidsuitgaven stijgen","De totale factorproductiviteit A stijgt door innovatie of beter onderwijs","De rente daalt"],
+      a: 2,
+      u: "A staat voor technologische vooruitgang, betere instituties, onderwijs, R&D. Een stijging van A betekent dat met dezelfde hoeveelheid K en L meer geproduceerd kan worden."
+    },
+    {
+      v: "Wat verstaan we onder de arbeidsinkomensquote (AIQ)?",
+      o: ["Het aandeel van werkenden in de totale bevolking","Het aandeel van arbeidsinkomen in het nationaal inkomen","Het gemiddelde brutoloon per werknemer","De verhouding tussen arbeidsproductiviteit en loonstijging"],
+      a: 1,
+      u: "AIQ = (arbeidsinkomen / nationaal inkomen) × 100%. Een hoge AIQ betekent dat werknemers een groot deel van de 'koek' ontvangen. De rest gaat als kapitaalinkomen (rente, dividend, winst) naar vermogensbezitters."
+    },
+    {
+      v: "Een progressief belastingstelsel houdt in dat:",
+      o: ["Iedereen hetzelfde bedrag aan belasting betaalt","Het marginale tarief gelijk is voor iedereen (vlaktaks)","Het gemiddelde tarief stijgt naarmate het inkomen hoger is","Vermogen zwaarder belast wordt dan arbeid"],
+      a: 2,
+      u: "Progressief = het gemiddeld belastingpercentage neemt toe met het inkomen. Hogere inkomens betalen niet alleen meer, maar ook een groter percentage. Dit nivelleert de inkomensverdeling."
+    },
+    {
+      v: "Structurele werkloosheid verschilt van conjuncturele werkloosheid omdat:",
+      o: ["Structurele werkloosheid alleen voorkomt in hoogconjunctuur","Structurele werkloosheid door laagconjunctuur wordt veroorzaakt","Structurele werkloosheid ook bestaat bij potentiële productie, door mismatches of te hoge lonen","Conjuncturele werkloosheid altijd hoger is dan structurele werkloosheid"],
+      a: 2,
+      u: "Structurele werkloosheid is 'natural rate' werkloosheid: die hoort bij Y* (potentiële productie). Oorzaken: mismatch tussen gevraagde en aangeboden vaardigheden, te hoge minimumloon, zoekfrictie. Conjuncturele werkloosheid is extra werkloosheid door laagconjunctuur."
+    },
+    {
+      v: "Groen BBP verschilt van gewoon BBP doordat:",
+      o: ["Het alleen de industriële productie meet","Milieuschade wordt afgetrokken van (en milieuverbetering opgeteld bij) het gewone BBP","Het gecorrigeerd is voor inflatie","Het alleen de overheidsuitgaven meeneemt"],
+      a: 1,
+      u: "Groen BBP = BBP – geschatte monetaire waarde van milieuschade + geschatte waarde van milieuverbetering. Het probeert milieukosten van economische groei zichtbaar te maken."
+    },
+    {
+      v: "Het verschil tussen primair en secundair inkomen is:",
+      o: ["Primair is loon, secundair is kapitaalinkomen","Primair is inkomen vóór belasting en uitkeringen; secundair is inkomen ná herverdeling door overheid","Primair is macro-inkomen; secundair is micro-inkomen","Primair is bbp; secundair is bnp"],
+      a: 1,
+      u: "Primair inkomen = marktinkomen (loon + kapitaalinkomen) vóór overheidsingrijpen. Secundair inkomen = na belastingen en sociale uitkeringen (netto inkomen na herverdeling). Het verschil toont de nivelleringseffecten van overheidsbeleid."
+    },
+    {
+      v: "Welke factor verhoogt NIET de totale factorproductiviteit (A)?",
+      o: ["Betere infrastructuur","Hogere onderwijskwaliteit","Meer arbeid inzetten","Betere instituties (rechtsstaat, eigendomsrechten)"],
+      a: 2,
+      u: "Meer arbeid inzetten (L hoger) verhoogt de productie via de productiefactor L, niet via A (totale factorproductiviteit). A stijgt door innovatie, R&D, onderwijs, betere instituties – efficiëntieverbeteringen, niet door meer input."
+    },
+    {
+      v: "Welzijn verschilt van welvaart doordat welzijn ook omvat:",
+      o: ["Alleen de materiële behoeften van huishoudens","Behoeftebevrediging van niet-schaarse goederen zoals vrije tijd en sociale contacten","Alleen het BBP per hoofd","De verdeling van vermogen in een samenleving"],
+      a: 1,
+      u: "Welvaart betreft schaarse goederen (die een prijs hebben). Welzijn omvat ook niet-schaarse goederen zoals geluk, sociale verbinding, gezondheid en zingeving – zaken die geen marktprijs hebben maar wel bijdragen aan levenstevredenheid."
+    }
+  ],
+  i: [
+    {
+      v: "De output gap is positief (> 0) bij:",
+      o: ["Laagconjunctuur, wanneer de werkloosheid hoog is","Hoogconjunctuur, wanneer de feitelijke productie groter is dan de potentiële productie","Wanneer de inflatie onder de 2% ligt","Wanneer de ECB de rente verlaagt"],
+      a: 1,
+      u: "Output gap = Y – Y*. Positief betekent: Y > Y* → de economie draait op meer dan capaciteit → krapte op arbeidsmarkt, risico op inflatie → hoogconjunctuur."
+    },
+    {
+      v: "De IS-curve is dalend omdat:",
+      o: ["Een hogere inflatie leidt tot minder productie","Een lagere rente leidt tot hogere investeringen en consumptie, waardoor het evenwichtsinkomen stijgt","De overheid minder uitgeeft bij hogere rente","De geldmarkt automatisch in evenwicht komt"],
+      a: 1,
+      u: "IS-curve: bij een lagere (reële) rente zijn investeringen en consumptie hoger → hogere bestedingen → hoger evenwichtsinkomen Y. Vandaar het dalende verband tussen rente (verticaal) en inkomen (horizontaal)."
+    },
+    {
+      v: "Automatische stabilisatoren werken doordat:",
+      o: ["De overheid bewust besluit meer te investeren bij recessie","Belastingopbrengsten automatisch dalen en uitkeringen automatisch stijgen bij laagconjunctuur, zonder actief beleid","De centrale bank automatisch de rente aanpast aan de conjunctuur","Bedrijven automatisch meer personeel aannemen bij hogere winsten"],
+      a: 1,
+      u: "Automatische stabilisatoren zijn ingebouwd in het belastingstelsel en uitkeringssysteem. Bij recessie daalt het inkomen → minder belasting betaald (ingebouwd stimulerend effect) + meer werkloosheidsuitkeringen (ingebouwde bestedingssteun) – zonder politiek besluit."
+    },
+    {
+      v: "De Europese Centrale Bank (ECB) heeft als primaire doelstelling:",
+      o: ["Maximale werkgelegenheid en prijsstabiliteit (duaal mandaat)","Prijsstabiliteit: inflatie dicht bij maar onder 2% (enkelvoudig mandaat)","Economische groei van minimaal 2% per jaar","Handhaving van vaste wisselkoersen in de eurozone"],
+      a: 1,
+      u: "De ECB heeft een enkelvoudig mandaat: prijsstabiliteit (inflatie ≈ 2%). De Amerikaanse Federal Reserve (Fed) heeft een duaal mandaat: zowel prijsstabiliteit als maximale werkgelegenheid."
+    },
+    {
+      v: "Geldschepping door commerciële banken vindt plaats doordat:",
+      o: ["De overheid bankbiljetten bijdrukt","Banken tegelijkertijd een krediet verstrekken én een depositobewijs creëren","De ECB goud aankoopt op de wereldmarkt","Spaarders hun geld overmaken naar de Staatsbank"],
+      a: 1,
+      u: "Commerciële banken scheppen geld door tegelijkertijd een lening (actief) en een deposito (passief) te creëren. Er hoeft geen spaargeld 'achter te zitten'. De ECB beïnvloedt dit proces via de rente."
+    },
+    {
+      v: "Het trilemma van monetair beleid stelt dat een land niet tegelijk kan hebben:",
+      o: ["Lage inflatie, hoge groei en lage werkloosheid","Vrij kapitaalverkeer, zelfstandig monetair beleid én een vaste wisselkoers","Lage rente, hoge belastingen en een begrotingsoverschot","Hoge export, lage import en een neutrale wisselkoers"],
+      a: 1,
+      u: "Het trilemma (impossible trinity): vrij kapitaalverkeer + vaste wisselkoers + zelfstandig monetair beleid zijn niet alle drie tegelijk mogelijk. De eurozone kiest voor vrij kapitaalverkeer en vaste koers → geen zelfstandig monetair beleid per land."
+    },
+    {
+      v: "Keynesianen zijn van mening dat begrotingsbeleid effectiever is dan monetair beleid omdat:",
+      o: ["De IS-curve vlak is, waardoor bestedingen sterk reageren op rente","De IS-curve steil is: bestedingen reageren weinig op renteveranderingen, waardoor rentepolitiek weinig effect heeft","De GA-curve verticaal is","De overheid altijd snel en efficiënt kan ingrijpen"],
+      a: 1,
+      u: "Keynesianen zien een steile IS: zelfs bij grote rentedalingen investeren bedrijven weinig extra (bestedingen reageren nauwelijks op rente). Dan helpt begrotingsbeleid (IS-curve verschuift naar rechts) beter dan monetair beleid."
+    },
+    {
+      v: "Anticyclisch begrotingsbeleid houdt in dat de overheid:",
+      o: ["Altijd bezuinigt om de staatsschuld te verlagen","Stimuleert (hogere uitgaven/lagere belastingen) bij laagconjunctuur en verkrapt bij hoogconjunctuur","De belastingen verhoogt om de conjunctuur te remmen","De rentevoetontwikkeling volgt bij haar bestedingsbeslissingen"],
+      a: 1,
+      u: "Anticyclisch beleid werkt tégen de conjunctuurbeweging: stimuleren in slechte tijden om de dip op te vangen; verkrappen in goede tijden om overkitting te voorkomen. Procyclisch beleid versterkt juist de conjunctuurbeweging."
+    },
+    {
+      v: "De reële rente is NEGATIEF wanneer:",
+      o: ["De nominale rente hoger is dan de inflatie","De inflatie hoger is dan de nominale rente","De ECB de rente verhoogt","De economie in hoogconjunctuur is"],
+      a: 1,
+      u: "Reële rente ≈ nominale rente – inflatie. Als inflatie 5% is en de nominale rente 2%, dan is de reële rente –3%. Spaargeld verliest dan koopkracht, ondanks de nominale rentebetaling."
+    },
+    {
+      v: "De MB-curve in het IS-MB-GA model verschuift omhoog wanneer:",
+      o: ["De overheid haar uitgaven verhoogt","De inflatie stijgt en de centrale bank de rente verhoogt","Het consumentenvertrouwen afneemt","De potentiële productie stijgt"],
+      a: 1,
+      u: "De MB-curve geeft de monetaire beleidsregel: de centrale bank verhoogt de rente als inflatie stijgt. Bij hogere inflatie verschuift de MB omhoog (hogere rente bij elk inkomensniveau). Dit remt de bestedingen en brengt de inflatie terug."
+    }
+  ]
+};
+
+// ============================================================
+// QUIZ ENGINE
+// ============================================================
+let quizStates = {};
+let domainScores = { d: null, e: null, f: null, g: null, h: null, i: null };
+
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function getDiagnosticQuestions() {
+  const domains = ['d','e','f','g','h','i'];
+  const pool = [];
+  domains.forEach(d => {
+    pool.push(...vragen[d].map(q => ({...q, domain: d})));
+  });
+  return shuffle(pool).slice(0, 10);
+}
+
+function renderQuiz(containerId, questions, quizId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  if (!quizStates[quizId]) {
+    quizStates[quizId] = { answered: new Array(questions.length).fill(false), correct: 0, total: questions.length };
+  }
+  const state = quizStates[quizId];
+
+  let html = `<div class="quiz-container">`;
+
+  // Progress bar
+  const answeredCount = state.answered.filter(Boolean).length;
+  const pct = Math.round((answeredCount / state.total) * 100);
+  html += `<div class="quiz-progress">
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="${quizId}-progfill" style="width:${pct}%"></div></div>
+    <div class="quiz-progress-text" id="${quizId}-progtext">${answeredCount}/${state.total} beantwoord</div>
+  </div>`;
+
+  questions.forEach((q, qi) => {
+    const letters = ['A','B','C','D'];
+    html += `<div class="question-card ${state.answered[qi] ? 'answered' : ''}" id="${quizId}-q${qi}">
+      <div class="question-num">Vraag ${qi + 1} ${q.domain ? `<span style="background:#e8eef8;color:#1a5fa8;padding:2px 7px;border-radius:10px;font-size:0.7rem;margin-left:6px;">Domein ${q.domain.toUpperCase()}</span>` : ''}</div>
+      <div class="question-text">${q.v}</div>
+      <div class="options">`;
+
+    q.o.forEach((opt, oi) => {
+      html += `<button class="option-btn" id="${quizId}-q${qi}-o${oi}" onclick="answerQuestion('${quizId}', ${qi}, ${oi}, ${q.a}, '${encodeURIComponent(q.u)}')" ${state.answered[qi] ? 'disabled' : ''}>
+        <span class="opt-letter">${letters[oi]}</span>
+        <span>${opt}</span>
+      </button>`;
+    });
+
+    html += `</div>`;
+    if (state.answered[qi]) {
+      html += `<div id="${quizId}-fb${qi}" class="feedback ${state.answered[qi] === 'correct' ? 'correct-fb' : 'wrong-fb'}">
+        ${state.answered[qi] === 'correct' ? '✅ <strong>Correct!</strong>' : '❌ <strong>Niet correct.</strong>'} ${decodeURIComponent(state.answered[qi + '_uitleg'] || '')}
+      </div>`;
+    } else {
+      html += `<div id="${quizId}-fb${qi}"></div>`;
+    }
+    html += `</div>`;
+  });
+
+  // Score card if all answered
+  if (answeredCount === state.total) {
+    const pctScore = Math.round((state.correct / state.total) * 100);
+    const scoreColor = pctScore >= 70 ? '#2a9d5c' : pctScore >= 50 ? '#f0a500' : '#c0392b';
+    html += `<div class="card" style="margin-top:24px">
+      <div class="score-card">
+        <div class="score-circle" style="background:${scoreColor}">${pctScore}%</div>
+        <h2>${pctScore >= 70 ? '🎉 Goed gedaan!' : pctScore >= 50 ? '💪 Aardig op weg!' : '📚 Meer studeren nodig'}</h2>
+        <p>${pctScore >= 70 ? 'Je beheerst deze stof goed.' : pctScore >= 50 ? 'Je begrijpt de basis, maar er zijn nog verbeterpunten.' : 'Lees de theorie nog eens goed door.'}</p>
+        <div class="score-breakdown">
+          <div class="score-stat"><div class="num green">${state.correct}</div><div class="lbl">Goed</div></div>
+          <div class="score-stat"><div class="num red">${state.total - state.correct}</div><div class="lbl">Fout</div></div>
+          <div class="score-stat"><div class="num">${state.total}</div><div class="lbl">Totaal</div></div>
+        </div>
+        <button class="btn btn-outline" onclick="resetQuiz('${quizId}', '${containerId}')">🔄 Opnieuw proberen</button>
+      </div>
+    </div>`;
+  }
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function answerQuestion(quizId, qi, oi, correct, uitleg) {
+  const state = quizStates[quizId];
+  if (state.answered[qi]) return;
+
+  const letters = ['A','B','C','D'];
+  const isCorrect = oi === correct;
+
+  state.answered[qi] = isCorrect ? 'correct' : 'wrong';
+  state.answered[qi + '_uitleg'] = uitleg;
+  if (isCorrect) state.correct++;
+
+  // Style buttons
+  const numOptions = document.querySelectorAll(`[id^="${quizId}-q${qi}-o"]`).length;
+  for (let i = 0; i < numOptions; i++) {
+    const btn = document.getElementById(`${quizId}-q${qi}-o${i}`);
+    if (!btn) continue;
+    btn.disabled = true;
+    if (i === correct) {
+      btn.classList.add(oi === correct && i === oi ? 'correct' : 'correct');
+      btn.querySelector('.opt-letter').textContent = '✓';
+    } else if (i === oi) {
+      btn.classList.add('wrong');
+      btn.querySelector('.opt-letter').textContent = '✗';
+    }
+  }
+
+  // Show feedback
+  const fbEl = document.getElementById(`${quizId}-fb${qi}`);
+  if (fbEl) {
+    fbEl.className = `feedback ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+    fbEl.innerHTML = `${isCorrect ? '✅ <strong>Correct!</strong>' : '❌ <strong>Niet correct.</strong>'} ${decodeURIComponent(uitleg)}`;
+  }
+
+  // Update progress
+  const answered = state.answered.filter((v,i) => typeof v === 'string').length;
+  const progFill = document.getElementById(`${quizId}-progfill`);
+  const progText = document.getElementById(`${quizId}-progtext`);
+  if (progFill) progFill.style.width = `${Math.round(answered/state.total*100)}%`;
+  if (progText) progText.textContent = `${answered}/${state.total} beantwoord`;
+
+  // If all answered, re-render to show score
+  if (answered === state.total) {
+    // Get container id from quiz
+    const containerId = quizId === 'diagnostisch' ? 'diagnostisch-quiz' : `quiz-${quizId.split('-')[1] || quizId}`;
+    const questions = quizId === 'diagnostisch' ? quizStates[quizId].questions : vragen[quizId.replace('quiz-','')];
+    setTimeout(() => {
+      const state2 = quizStates[quizId];
+      const qs = state2.questions;
+      renderQuiz(containerId, qs, quizId);
+      updateDomainProgress(quizId, state2);
+    }, 400);
+  }
+}
+
+function updateDomainProgress(quizId, state) {
+  const domain = quizId.replace('quiz-','');
+  if (['d','e','f','g','h','i'].includes(domain)) {
+    const pct = Math.round((state.correct / state.total) * 100);
+    const el = document.getElementById(`prog-${domain}`);
+    if (el) el.style.width = pct + '%';
+
+    // Update nav badge
+    const navEl = document.getElementById(`nav-domein-${domain}`);
+    if (navEl) {
+      const existing = navEl.querySelector('.badge');
+      if (existing) existing.remove();
+      const badge = document.createElement('span');
+      badge.className = `badge ${pct >= 70 ? 'done' : ''}`;
+      badge.textContent = `${state.correct}/${state.total}`;
+      navEl.appendChild(badge);
+    }
+  }
+}
+
+function resetQuiz(quizId, containerId) {
+  delete quizStates[quizId];
+  const qs = quizStates[quizId + '_questions'] || [];
+  // Rebuild
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  // Re-init
+  initQuiz(quizId, containerId);
+}
+
+function initQuiz(quizId, containerId) {
+  let questions;
+  if (quizId === 'diagnostisch') {
+    questions = getDiagnosticQuestions();
+  } else {
+    const domain = quizId.replace('quiz-','');
+    questions = [...vragen[domain]];
+  }
+  quizStates[quizId] = { answered: new Array(questions.length).fill(false), correct: 0, total: questions.length, questions };
+  renderQuiz(containerId, questions, quizId);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const pages = ['home','diagnostisch','domein-d','domein-e','domein-f','domein-g','domein-h','domein-i'];
+const quizMap = {
+  'diagnostisch': { containerId: 'diagnostisch-quiz', quizId: 'diagnostisch' },
+  'domein-d': { containerId: 'quiz-d', quizId: 'quiz-d' },
+  'domein-e': { containerId: 'quiz-e', quizId: 'quiz-e' },
+  'domein-f': { containerId: 'quiz-f', quizId: 'quiz-f' },
+  'domein-g': { containerId: 'quiz-g', quizId: 'quiz-g' },
+  'domein-h': { containerId: 'quiz-h', quizId: 'quiz-h' },
+  'domein-i': { containerId: 'quiz-i', quizId: 'quiz-i' },
+};
+
+function showPage(pageId) {
+  pages.forEach(p => {
+    const el = document.getElementById(`page-${p}`);
+    const nav = document.getElementById(`nav-${p}`);
+    if (el) el.classList.toggle('active', p === pageId);
+    if (nav) nav.classList.toggle('active', p === pageId);
+  });
+
+  // Init quiz if needed
+  if (quizMap[pageId]) {
+    const { containerId, quizId } = quizMap[pageId];
+    if (!quizStates[quizId]) {
+      initQuiz(quizId, containerId);
+    }
+  }
+
+  window.scrollTo(0,0);
+}
+
+// Init on load
+window.onload = function() {
+  showPage('home');
+};
+</script>
+</body>
+</html>
